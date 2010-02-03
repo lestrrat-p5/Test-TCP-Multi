@@ -173,7 +173,7 @@ Test::TCP::Multi - Test Using Multiple Servers/Clients
 
     use Test::MultiTCP;
 
-    multi_tcp(
+    test_multi_tcp(
         server1 => sub {
             my ($port, $data_hash) = @_;
         },
@@ -226,6 +226,5 @@ under the same terms as Perl itself.
 See http://www.perl.com/perl/misc/Artistic.html
 
 =cut
-
 
 
