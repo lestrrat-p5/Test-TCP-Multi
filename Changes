@@ -1,5 +1,8 @@
 Changes
 ======
 
+0.00002 03 Feb 2010
+    * Check for defined-ness when checking for ports
+
 0.00001 03 Feb 2010
     * Initial release

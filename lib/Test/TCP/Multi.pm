@@ -8,7 +8,7 @@ use POSIX ();
 use Storable qw(nstore_fd fd_retrieve);
 use Time::HiRes();
 
-our $VERSION = '0.00001';
+our $VERSION = '0.00002';
 our @EXPORT = qw( empty_port test_multi_tcp wait_port );
 
 # process does not die when received SIGTERM, on win32.
