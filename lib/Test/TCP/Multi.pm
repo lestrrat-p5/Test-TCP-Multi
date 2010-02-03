@@ -37,7 +37,7 @@ sub test_multi_tcp {
     my %ports;
     my $prev;
     foreach my $server (grep { /^server/i } keys %args) {
-        $prev = $ports{$server} = empty_port( $prev + 1 );
+        $prev = $ports{$server} = empty_port( defined $prev ? $prev + 1 : () );
     }
 
     my %pids;
