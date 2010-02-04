@@ -10,7 +10,7 @@ use Storable qw(nstore_fd fd_retrieve);
 use Time::HiRes();
 
 our $VERSION = '0.00002';
-our @EXPORT = qw( empty_port test_multi_tcp wait_port );
+our @EXPORT = qw( empty_port test_multi_tcp wait_port kill_proc );
 
 # process does not die when received SIGTERM, on win32.
 my $TERMSIG = $^O eq 'MSWin32' ? 'KILL' : 'TERM';
@@ -116,7 +116,7 @@ sub test_multi_tcp {
             };
             if ($@) {
                 while ( my ($name, $pid) = each %processes ) {
-                    kill TERM => $pid;
+                    kill_proc( $pid );
                 }
                 last RUN;
             }
@@ -134,15 +134,21 @@ sub test_multi_tcp {
 
         if (scalar keys %pids) {
             while (my($name, $pid) = each %processes) {
-                kill $TERMSIG, $pid;
+                kill_proc( $pid );
             }
         }
                 
     }
 
     if ($sig) {
-warn "rethrow";
         kill $sig, $$; # rethrow signal after cleanup
+    }
+}
+
+sub kill_proc {
+    foreach my $pid (@_) {
+        next unless $pid;
+        kill $TERMSIG => $pid;
     }
 }
 
@@ -217,7 +223,7 @@ Server callbacks should expect two arguments, the port number you should use, an
 
 B<UNLIKE Test::TCP>, YOU HAVE TO KILL THE SERVERS YOURSELF! This is because there's no way for Test::TCP::Multi to know if you're really done with the servers or not. Simply do something like
 
-    kill TERM => $data_hash->{ your_server_name }->{pid};
+    kill_proc($data_hash->{ your_server_name }->{pid});
 
 =head1 CLIENTS
 
